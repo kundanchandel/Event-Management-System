@@ -5,7 +5,13 @@ var serviceSchema = new mongoose.Schema({
     city  : [String],
     desc  : String,
     price : String,
-    provider : String
+    provider:{
+        id:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"User"
+        },
+        username:String
+    }
 });
 
 module.exports = mongoose.model("Service",serviceSchema);

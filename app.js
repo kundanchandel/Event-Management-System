@@ -76,6 +76,17 @@ app.post("/user/login",passport.authenticate('local',{
 });
 
 /**********************************************************************************************************
+                                VENDOR  ROUTES
+***********************************************************************************************************/
+app.get("/profile",function(req,res){
+    res.render("vendor/profile.ejs");
+});
+
+app.get("/addService",function(req,res){
+    res.render("vendor/addService.ejs");
+});
+
+/**********************************************************************************************************
                                 VENDOR REGISTER AND LOGIN ROUTES
 ***********************************************************************************************************/
 app.get("/vendor/login",function(req,res){
@@ -102,7 +113,7 @@ app.post("/vendor/register",function(req,res){
 });
 
 app.post("/vendor/login",passport.authenticate('local',{
-    successRedirect:"/",
+    successRedirect:"/profile",
     failureRedirect:"/vendor/login"
 }),function(req,res){
 });
