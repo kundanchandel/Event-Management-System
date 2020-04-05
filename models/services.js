@@ -1,14 +1,15 @@
 var mongoose = require("mongoose");
 
 var serviceSchema = new mongoose.Schema({
-    type  : String,
-    city  : [String],
-    desc  : String,
-    price : String,
-    provider:{
+    type       :String,
+    city       :[String],
+    image      :[String],
+    description:String,
+    price      :String,
+    provider   :{
         id:{
             type:mongoose.Schema.Types.ObjectId,
-            ref:"User"
+            ref :"Vendor"
         },
         username:String
     }
