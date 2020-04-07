@@ -2,10 +2,9 @@ var bodyparser      = require("body-parser");
 var express         = require("express"); 
 var app             = express();
 var mongoose        = require("mongoose");
-var passport        = require("passport");
 var bcrypt          = require("bcrypt")
 var jwt             = require("jsonwebtoken");
-var LocalStrategy   = require("passport-local");
+var cookieParser    = require("cookie-parser");
 var methodOverride  = require("method-override"); // for method="DELETE"
 var dotenv          = require("dotenv");
 dotenv.config()
@@ -29,26 +28,11 @@ var storage = multer.diskStorage({
   })   
 var upload = multer({ storage: storage })
 
-/*************************************PASSPORT CONFIGURATION*************************************/
-app.use(require("express-session")({
-    secret:"anything",
-    resave:false,
-    saveUninitialized:false
-})); 
-app.use(passport.initialize());
-app.use(passport.session());
-
-// passport.use(new LocalStrategy(User.authenticate()));
-// passport.serializeUser(User.serializeUser());
-// passport.deserializeUser(User.deserializeUser());
-
-passport.use(new LocalStrategy(Vendor.authenticate()));
-passport.serializeUser(Vendor.serializeUser());
-passport.deserializeUser(Vendor.deserializeUser());
-
 app.use(bodyparser.urlencoded({extended:true}));
 app.set("view engine","ejs");
 app.use(methodOverride("_method"));
+
+app.use(cookieParser());
 
 mongoose.connect('mongodb://localhost/event',function(err){
 if(err) throw err;
@@ -81,13 +65,10 @@ app.post("/user/register",async function(req,res){
         const hashedPassword =await bcrypt.hash(req.body.password,salt)
         var user = new User({username:req.body.username, email:req.body.email, password:hashedPassword});
         user.save()
-        console.log(user)
         res.redirect("/")
     }else{
         res.send("email already exist")
     }
-    //hash password
-    
 });
 app.post("/user/login",async function(req,res){
     const user = await User.findOne({email:req.body.email});
@@ -99,30 +80,34 @@ app.post("/user/login",async function(req,res){
             res.send("Invalid password")
         }else{
             const token = jwt.sign({_id:user._id},process.env.TOKEN_SECRET);
-            res.header('auth-token',token)
-            res.set('auth-token',token);
-           // console.log(token);
+            res.cookie('authToken',token,{
+                maxAge:2628000000, //1 month in mili sec
+                httpOnly:true
+            });
             res.redirect("/");
         }
     }
 });
-
+app.get("/logout",isLoggedIn,function(req,res){
+    res.cookie('authToken',"",{
+        maxAge:-1
+    });
+    res.redirect("/");
+});
 /**********************************************************************************************************
                                 VENDOR  ROUTES
 ***********************************************************************************************************/
-app.get("/profile",function(req,res){
+app.get("/vendor/profile",isLoggedIn,function(req,res){
     res.render("vendor/profile.ejs");
 });
 
-app.get("/addService",function(req,res){
+app.get("/vendor/addService",function(req,res){
     res.render("vendor/addService.ejs");
 });
 
-app.post("/vendor/addService",upload.array('images', 5),function(req,res){
-    console.log(req.body)
-    console.log(req.files)
+app.post("/vendor/addService",isLoggedIn,upload.array('images', 5),function(req,res){
     console.log(req.user)
-    console.log(req.vendor)
+    res.send("add services")
 });
 /**********************************************************************************************************
                                 VENDOR REGISTER AND LOGIN ROUTES
@@ -135,37 +120,45 @@ app.get("/vendor/register",function(req,res){
     res.render("vendor/register");
 });
 
-app.post("/vendor/register",function(req,res){
-    console.log(req.body);
-    var newVendor = new Vendor({username:req.body.username, email:req.body.email});
-    Vendor.register(newVendor,req.body.password,function(err,user){
-        if(err){
-            console.log(err);
-            res.redirect("/Vendor/register");
+
+app.post("/vendor/register",async function(req,res){
+    const emailExist = await Vendor.findOne({email:req.body.email});
+    if(!emailExist){
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword =await bcrypt.hash(req.body.password,salt)
+    var vendor = new Vendor({username:req.body.username, email:req.body.email,password:hashedPassword});
+    vendor.save()
+    res.redirect("/")
+    }else{
+        res.send("email already exist...");
+    }
+});
+
+app.post("/vendor/login",async function(req,res){
+    const vendor = await Vendor.findOne({email:req.body.email});
+    if(!vendor){
+        res.send("email does't exist")
+    }else{
+        const validpass =await bcrypt.compare(req.body.password,vendor.password)
+        if(!validpass){
+            res.send("Invalid password")
+        }else{
+            const token = jwt.sign({_id:vendor._id},process.env.TOKEN_SECRET);
+            res.cookie('authToken',token,{
+                maxAge:2628000000, //1 month in mili sec
+                httpOnly:true
+            });
+            res.redirect("/vendor/profile");
         }
-        passport.authenticate("local")(req,res,function(){
-            console.log("registereed...");
-            res.redirect("/");
-        })
-    });
+    }
 });
 
-app.post("/vendor/login",passport.authenticate('local',{
-    successRedirect:"/profile",
-    failureRedirect:"/vendor/login"
-}),function(req,res){
-});
-
-app.get("/secret",isLoggedIn,function(req,res){
-    console.log(req.user)
-});
 /**********************************************************************************************************
                                 MIDDLEWARES
 ***********************************************************************************************************/
 function isLoggedIn(req,res,next){
-    console.log(res.header('auth-token'))
-    console.log(req.header)
-    const token = req.header('auth-token');
+    const token = req.cookies.authToken
+    console.log("token:" + token)
     if(!token){
         res.send("access denied");
     }else{
