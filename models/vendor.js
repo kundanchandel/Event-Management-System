@@ -11,7 +11,7 @@ var vendorSchema = new mongoose.Schema({
     services     :[
            {
                 type:mongoose.Schema.Types.ObjectId,
-                ref :"Services"
+                ref :"Service"
            }
     ]
 });

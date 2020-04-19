@@ -98,16 +98,69 @@ app.get("/logout",isLoggedIn,function(req,res){
                                 VENDOR  ROUTES
 ***********************************************************************************************************/
 app.get("/vendor/profile",isLoggedIn,function(req,res){
-    res.render("vendor/profile.ejs");
+    // Vendor.findById(req.user._id,function(err,vendor){
+    //     if(err){
+    //         console.log(err)
+    //     }else{
+    //         Services.find({"provider.id":vendor.id},function(err,services){
+    //             if(err){
+    //                 console.log(err)
+    //             }else{
+    //                 console.log(vendor)
+    //                 console.log(services)
+    //                 res.render("vendor/profile.ejs",{user:vendor,services:services});
+    //             }
+    //         });
+    //     }
+    // })
+    Vendor.findById(req.user._id).populate("services").exec(function(err,vendor){
+        if(err){
+            console.log(err);
+        }else{
+            console.log(vendor); 
+            res.render("vendor/profile.ejs",{vendor:vendor});
+        }
+    });
 });
 
-app.get("/vendor/addService",function(req,res){
+app.get("/vendor/addService",isLoggedIn,function(req,res){
     res.render("vendor/addService.ejs");
 });
 
 app.post("/vendor/addService",isLoggedIn,upload.array('images', 5),function(req,res){
+    tempImage=[]
+    req.files.forEach(function(file){
+          path=file.path;
+          tempImage.push(path)
+        });
+    var newService ={
+        type: req.body.type,
+        city: req.body.city,
+        description: req.body.description,
+        price: req.body.price,
+        image: tempImage
+    };
     console.log(req.user)
-    res.send("add services")
+    Vendor.findById(req.user._id,function(err,vendor){
+        if(err){
+            console.log(err);
+        }else{
+            Services.create(newService,function(err,service){
+                if(err){
+                    console.log(err)
+                }else{
+                    service.provider.id = vendor._id;
+                    service.provider.username = vendor.username;
+                    service.save();
+                    vendor.services.push(service);
+                    vendor.save();
+                    //res.redirect("/user/profile");
+                }
+            });
+        
+            res.redirect("/vendor/profile");
+        }
+    })
 });
 /**********************************************************************************************************
                                 VENDOR REGISTER AND LOGIN ROUTES
@@ -158,12 +211,15 @@ app.post("/vendor/login",async function(req,res){
 ***********************************************************************************************************/
 function isLoggedIn(req,res,next){
     const token = req.cookies.authToken
-    console.log("token:" + token)
     if(!token){
         res.send("access denied");
     }else{
         const verified = jwt.verify(token,process.env.TOKEN_SECRET);
-        req.user = verified;
+        console.log(req.user);
+        if(req.user != verified){
+            console.log("xxxxx");
+            req.user = verified;
+        }
         next()
     }
 }

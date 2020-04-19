@@ -4,7 +4,14 @@
     <div style="width: 30%;margin: 25px auto;">
         <form action="/vendor/addService" method="POST" enctype="multipart/form-data">
             <div class="form-group">
-                <select  name="Cities" multiple>
+                <select  name="type">
+                    <option value="Decoration">Decoration</option>
+                    <option value="Catering">Catering</option>
+                    <option value="Garden">Garden</option>
+                  </select>
+            </div>
+            <div class="form-group">
+                <select  name="city">
                     <option value="Indore">Indore</option>
                     <option value="Bhopal">Bhopal</option>
                     <option value="Ujjain">Ujjain</option>
@@ -12,21 +19,15 @@
                   </select>
             </div>
             <div class="form-group">
-                <select  name="Type">
-                    <option value="Decoration">Decoration</option>
-                    <option value="Catering">Catering</option>
-                    <option value="Garden">Garden</option>
-                  </select>
-            </div>
-            <div class="form-group">
-                <input class="form-control" type="file" name="images" multiple accept="image/*"/>
-            </div>
-            <div class="form-group">
                 <input class="form-control" type="text" name="description" placeholder="Description">
             </div>
             <div class="form-group">
                 <input class="form-control" type="text" name="Price" placeholder="Price">
             </div>
+            <div class="form-group">
+                <input class="form-control" type="file" name="images" multiple accept="image/*"/>
+            </div>
+            <p>You can upload upto 5 images</p>
             <div class="form-group">
                 <button class="btn btn-lg btn-primary btn-block">Login</button> 
             </div>
