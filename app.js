@@ -51,14 +51,15 @@ app.get("/",function(req,res){
                                     USER LOGIN AND REGISTER ROUTES
 ***********************************************************************************************************/
 app.get("/user/login",function(req,res){
-    res.render("user/login");
+    res.render("login",{type:"user"});
 });
 
 app.get("/user/register",function(req,res){
-    res.render("user/register");
+    res.render("register",{type:"user"});
 });
 
-app.post("/user/register",async function(req,res){    
+app.post("/user/register",async function(req,res){   
+    console.log("user/register") 
     const emailExist = await User.findOne({email:req.body.email});
     if(!emailExist){
         const salt = await bcrypt.genSalt(10);
@@ -70,7 +71,9 @@ app.post("/user/register",async function(req,res){
         res.send("email already exist")
     }
 });
+
 app.post("/user/login",async function(req,res){
+    console.log("user/login")
     const user = await User.findOne({email:req.body.email});
     if(!user){
         res.send("email does't exist")
@@ -88,6 +91,7 @@ app.post("/user/login",async function(req,res){
         }
     }
 });
+
 app.get("/logout",isLoggedIn,function(req,res){
     res.cookie('authToken',"",{
         maxAge:-1
@@ -98,21 +102,6 @@ app.get("/logout",isLoggedIn,function(req,res){
                                 VENDOR  ROUTES
 ***********************************************************************************************************/
 app.get("/vendor/profile",isLoggedIn,function(req,res){
-    // Vendor.findById(req.user._id,function(err,vendor){
-    //     if(err){
-    //         console.log(err)
-    //     }else{
-    //         Services.find({"provider.id":vendor.id},function(err,services){
-    //             if(err){
-    //                 console.log(err)
-    //             }else{
-    //                 console.log(vendor)
-    //                 console.log(services)
-    //                 res.render("vendor/profile.ejs",{user:vendor,services:services});
-    //             }
-    //         });
-    //     }
-    // })
     Vendor.findById(req.user._id).populate("services").exec(function(err,vendor){
         if(err){
             console.log(err);
@@ -166,15 +155,16 @@ app.post("/vendor/addService",isLoggedIn,upload.array('images', 5),function(req,
                                 VENDOR REGISTER AND LOGIN ROUTES
 ***********************************************************************************************************/
 app.get("/vendor/login",function(req,res){
-    res.render("vendor/login");
+    res.render("login",{type:"vendor"});
 });
 
 app.get("/vendor/register",function(req,res){
-    res.render("vendor/register");
+    res.render("register",{type:"vendor"});
 });
 
 
 app.post("/vendor/register",async function(req,res){
+    console.log("vendor/register")
     const emailExist = await Vendor.findOne({email:req.body.email});
     if(!emailExist){
     const salt = await bcrypt.genSalt(10);
@@ -188,6 +178,7 @@ app.post("/vendor/register",async function(req,res){
 });
 
 app.post("/vendor/login",async function(req,res){
+    console.log("vendor/login")
     const vendor = await Vendor.findOne({email:req.body.email});
     if(!vendor){
         res.send("email does't exist")

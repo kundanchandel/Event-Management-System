@@ -1,7 +1,36 @@
 <%- include ('../partials/header') %>
 
-<button><a href="/vendor/addService">Add service</a></button>
 
-<%= vendor.services[0].provider %>
+
+<div class="container">
+    <div class="row">
+        <h1>Welcome <%=vendor.username%></h1>
+    </div>
+    <div class="row">
+        <address><%=vendor.email%></address>
+    </div>
+    <div class="row">
+            <button type="button"  class="btn"><a href="/vendor/addService" >Add new service</a></button>
+     </div>
+    
+    <br>
+    <br>
+     <h2>Services</h2>
+     <hr>
+    <div class="row text-center" style="display: flex; flex-wrap:wrap;">
+        <% vendor.services.forEach(function(service){ %>
+            <div class="col-md-4 col-sm-6">
+               <div class="img-thumbnail"style="overflow: hidden;">
+                    <img class="img-thumbnail" src="http://localhost:7000/<%=service.image[0] %>">
+                    <div class="caption ">
+                        <h4>City: <%= service.city %> </h4>
+                        <h4>Type: <%= service.type %> </h4>
+                        <p><%= service.description %> </p>
+                    </div>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+</div>
 
 <%- include ('../partials/footer') %>

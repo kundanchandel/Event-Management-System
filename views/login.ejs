@@ -1,8 +1,8 @@
-<%- include ('../partials/header') %>
+<%- include ('./partials/header') %>
     
-    <h1 style="text-align: center">Vendor Login</h1>
+    <h1 style="text-align: center">Login</h1>
     <div style="width: 30%;margin: 25px auto;">
-        <form action="/vendor/login" method="POST">
+        <form action="/<%=type%>/login" method="POST">
             <div class="form-group">
                 <input class="form-control" type="text" name="email" placeholder="email">
             </div>
@@ -15,4 +15,4 @@
         </form>
     </div>
 
-<%- include ('../partials/footer') %>
+<%- include ('./partials/footer') %>
