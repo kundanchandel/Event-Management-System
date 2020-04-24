@@ -1,0 +1,37 @@
+<%- include ('./partials/header') %>
+
+<div class="container">
+    <div class="row mt-2 ">
+        <div class="col-10 col-sm-6">
+        <h1>Welcome <%=user.username%></h1>
+        </div>
+    </div>    
+     <h2>Services</h2>
+     <hr>
+    
+    <div class="row" style="display: flex; flex-wrap:wrap;">
+        <% services.forEach(function(service){ %>
+            <div class=" col-10 col-sm-4  col-md-3  card  m-2 ml-4">
+
+                    <img class="card-img-top" src="http://localhost:7000/<%=service.image[0] %>">
+                    <div class="card-body ">
+                        <h6  class="card-title" style="float: right;;">Price: <%= service.price %></h6>
+                        <br>
+                        <hr>
+                        <h5 class="card-title">Type: <%= service.type %> </h5>
+                        <h5 class="card-title">City: <%= service.city %> </h5>
+                        <hr>
+                        <p class="card-text"><%= service.description %> </p>
+                        <hr>
+                        <h5 class="card-text">Provider: <%= service.provider.username %></h5>
+                    </div>
+                
+            </div>
+        <% }); %>
+    </div>
+    
+</div>
+    
+
+
+<%- include ('./partials/footer') %>

@@ -46,6 +46,22 @@ app.get("/",function(req,res){
    res.render("index");
 });
 
+app.get("/main",isLoggedIn,function(req,res){
+    User.findById(req.user._id,function(err,user){
+        if(err){
+            console.log(err)
+        }else{
+            Services.find({},function(err,services){
+                if(err){
+                    console.log(err);
+                }else{
+                    console.log(services)
+                    res.render("main",{services:services,user:user});
+                }
+            });
+        }
+    })
+});
 
 /**********************************************************************************************************
                                     USER LOGIN AND REGISTER ROUTES
@@ -87,7 +103,7 @@ app.post("/user/login",async function(req,res){
                 maxAge:2628000000, //1 month in mili sec
                 httpOnly:true
             });
-            res.redirect("/");
+            res.redirect("/main");
         }
     }
 });
@@ -164,7 +180,6 @@ app.get("/vendor/register",function(req,res){
 
 
 app.post("/vendor/register",async function(req,res){
-    console.log("vendor/register")
     const emailExist = await Vendor.findOne({email:req.body.email});
     if(!emailExist){
     const salt = await bcrypt.genSalt(10);
@@ -178,7 +193,6 @@ app.post("/vendor/register",async function(req,res){
 });
 
 app.post("/vendor/login",async function(req,res){
-    console.log("vendor/login")
     const vendor = await Vendor.findOne({email:req.body.email});
     if(!vendor){
         res.send("email does't exist")
@@ -208,7 +222,6 @@ function isLoggedIn(req,res,next){
         const verified = jwt.verify(token,process.env.TOKEN_SECRET);
         console.log(req.user);
         if(req.user != verified){
-            console.log("xxxxx");
             req.user = verified;
         }
         next()
