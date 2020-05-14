@@ -40,7 +40,7 @@ console.log("connected to db...");
 });
 
 /**********************************************************************************************************
-                                            INDEX ROUTE
+                                            INDEX ROUTES
 ***********************************************************************************************************/
 app.get("/",function(req,res){
    res.render("index");
@@ -55,7 +55,6 @@ app.get("/main",isLoggedIn,function(req,res){
                 if(err){
                     console.log(err);
                 }else{
-                    console.log(services)
                     res.render("main",{services:services,user:user});
                 }
             });
@@ -74,8 +73,7 @@ app.get("/user/register",function(req,res){
     res.render("register",{type:"user"});
 });
 
-app.post("/user/register",async function(req,res){   
-    console.log("user/register") 
+app.post("/user/register",async function(req,res){    
     const emailExist = await User.findOne({email:req.body.email});
     if(!emailExist){
         const salt = await bcrypt.genSalt(10);
@@ -89,7 +87,6 @@ app.post("/user/register",async function(req,res){
 });
 
 app.post("/user/login",async function(req,res){
-    console.log("user/login")
     const user = await User.findOne({email:req.body.email});
     if(!user){
         res.send("email does't exist")
@@ -104,8 +101,28 @@ app.post("/user/login",async function(req,res){
                 httpOnly:true
             });
             res.redirect("/main");
+
         }
     }
+});
+
+app.get("/user/addService/:id",isLoggedIn,(req,res)=>{
+    User.findById(req.user._id,(err,user)=>{
+        if(err){
+            console.log(err);
+        }else{
+            Services.findById(req.params.id,(err,service)=>{
+                if(err){
+                    console.log(err)
+                }else{
+                    user.services.push(service);
+                    console.log(user)
+                    user.save();
+                    res.redirect("back")
+                }
+            });
+        }
+    });
 });
 
 app.get("/logout",isLoggedIn,function(req,res){
@@ -121,8 +138,7 @@ app.get("/vendor/profile",isLoggedIn,function(req,res){
     Vendor.findById(req.user._id).populate("services").exec(function(err,vendor){
         if(err){
             console.log(err);
-        }else{
-            console.log(vendor); 
+        }else{ 
             res.render("vendor/profile.ejs",{vendor:vendor});
         }
     });
@@ -210,7 +226,32 @@ app.post("/vendor/login",async function(req,res){
         }
     }
 });
+/**********************************************************************************************
+**********************************************************************************************/
 
+app.get("/services/:id",(req,res)=>{
+    Services.findById(req.params.id,(err,service)=>{
+        if(err){
+            console.log(err);
+        }else{
+            res.render("service",{service:service});
+        }
+    });
+})
+
+app.get("/provider/profile/:id",(req,res)=>{
+    Vendor.findById(req.params.id).populate("services").exec(function(err,vendor){
+        if(err){
+            console.log(err);
+        }else{
+            res.render("profile.ejs",{vendor:vendor});
+        }
+    });
+});
+
+/**********************************************************************************************
+ *                          MIDDLEWARES
+**********************************************************************************************/
 /**********************************************************************************************************
                                 MIDDLEWARES
 ***********************************************************************************************************/

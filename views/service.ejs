@@ -1,0 +1,46 @@
+<%- include ('./partials/header') %>
+
+    <div class="container">
+        <div class="row">
+                <div class="col-md-6">
+                    <center>
+                        <h3>Provider: <%=service.provider.username%></h3>
+                    </center>                 
+                </div>     
+                <div class="col-md-6">
+                    <center>
+                        <h3><a href="/provider/profile/<%=service.provider.id%>">About Provider</a></h3>   
+                    </center>
+                </div>
+        </div>
+        <div class="row">
+            <% service.image.forEach(function(image){ %> 
+                 <div class="col-md-4">
+                     <img class="card-img-top" src="http://localhost:7000/<%=image%>" alt="">
+                 </div>
+             <% }); %> 
+         </div>
+         <hr>
+         <div class="row">
+             <div class="col-md-6">
+                <h4>Type : <%=service.type%></h4>
+             </div>
+             <div class="col-md-6">
+                <h4>City : <%=service.city%></h4>
+             </div>  
+         </div>   
+        <hr>
+        <div class="row">
+            <div>
+                <h4><%=service.description%></h4>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <center>
+                <button type="button" class="btn btn-secondary btn-lg"><a style="color:white" href="/user/addService/<%=service._id%>">Add Service</a></button>
+            </center>
+        </div>
+    </div>
+
+<%- include ('./partials/footer') %>
