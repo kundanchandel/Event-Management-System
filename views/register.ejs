@@ -1,7 +1,8 @@
 <%- include ('./partials/header') %>
 
-<h1 style="text-align: center">Vendor Register</h1>
-<div style="width: 30%;margin: 25px auto;">
+
+<div style="width: 30%;margin: 10vh auto;">
+    <h1  style="text-align: center"><%=type%> Register</h1>
     <form action="/<%=type%>/register" method="POST">
         <div class="form-group">
             <input class="form-control" type="text" name="username" placeholder="username"> 
@@ -16,5 +17,7 @@
             <button class="btn btn-lg btn-primary btn-block">Register</button>
         </div>
     </form>
+    <a href="/<%=type%>/login"><h4>Have an account? Log in</h4></a>
 </div>
-<%- include ('./partials/footer') %>
+</body>
+</html>

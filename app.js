@@ -17,16 +17,6 @@ var Vendor          = require("./models/vendor");
 app.use('/uploads',express.static("uploads"))
 
 /*************************************MULTER*************************************/
-var multer  = require('multer')
-var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, './uploads')
-    },
-    filename: function (req, file, cb) {
-      cb(null, Date.now()+ file.originalname)
-    }
-  })   
-var upload = multer({ storage: storage })
 
 app.use(bodyparser.urlencoded({extended:true}));
 app.set("view engine","ejs");
@@ -34,7 +24,7 @@ app.use(methodOverride("_method"));
 
 app.use(cookieParser());
 
-mongoose.connect('mongodb://localhost/event',function(err){
+mongoose.connect(process.env.MONGODB,function(err){
 if(err) throw err;
 console.log("connected to db...");
 });
@@ -125,7 +115,18 @@ app.get("/user/addService/:id",isLoggedIn,(req,res)=>{
     });
 });
 
-app.get("/logout",isLoggedIn,function(req,res){
+app.get("/user/preview",isLoggedIn,(req,res)=>{
+    User.findById(req.user._id).populate("services").exec(function(err,user){
+        if(err){
+            console.log(err);
+        }else{ 
+            console.log(user);
+            res.render("user/preview",{user:user});
+        }
+    });
+});
+
+app.get("/logout",function(req,res){
     res.cookie('authToken',"",{
         maxAge:-1
     });
@@ -148,18 +149,14 @@ app.get("/vendor/addService",isLoggedIn,function(req,res){
     res.render("vendor/addService.ejs");
 });
 
-app.post("/vendor/addService",isLoggedIn,upload.array('images', 5),function(req,res){
-    tempImage=[]
-    req.files.forEach(function(file){
-          path=file.path;
-          tempImage.push(path)
-        });
+app.post("/vendor/addService",isLoggedIn,function(req,res){
+    var images = [req.body.image0,req.body.image1,req.body.image2]
     var newService ={
         type: req.body.type,
         city: req.body.city,
         description: req.body.description,
         price: req.body.price,
-        image: tempImage
+        image: images
     };
     console.log(req.user)
     Vendor.findById(req.user._id,function(err,vendor){
@@ -202,7 +199,7 @@ app.post("/vendor/register",async function(req,res){
     const hashedPassword =await bcrypt.hash(req.body.password,salt)
     var vendor = new Vendor({username:req.body.username, email:req.body.email,password:hashedPassword});
     vendor.save()
-    res.redirect("/")
+    res.redirect("/vendor/login")
     }else{
         res.send("email already exist...");
     }
@@ -258,10 +255,9 @@ app.get("/provider/profile/:id",(req,res)=>{
 function isLoggedIn(req,res,next){
     const token = req.cookies.authToken
     if(!token){
-        res.send("access denied");
+        res.send("<h1>You must be logged in to do that</h1>");
     }else{
         const verified = jwt.verify(token,process.env.TOKEN_SECRET);
-        console.log(req.user);
         if(req.user != verified){
             req.user = verified;
         }
@@ -271,6 +267,6 @@ function isLoggedIn(req,res,next){
 
 /**********************************************************************************************
 **********************************************************************************************/
-app.listen(7000,function(){
+app.listen(process.env.PORT || 7000,function(){
     console.log("serving...");
 });

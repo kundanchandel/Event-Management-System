@@ -1,6 +1,6 @@
 <%- include ('./partials/header') %>
 
-    <div class="container" style="margin-top: 10px;">
+    <div class="container-fluid" style="margin-top: 10px;">
         <div class="row">
                 <div class="col-md-6">
                     <center>
@@ -17,17 +17,22 @@
          <br><br>
          <%vendor.services.forEach(function(service){%>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <center>
                         Type : <%=service.type%>
                     </center>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <center>
                         City : <%=service.city%>
                     </center>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
+                    <center>
+                        Price : <%=service.price%>
+                    </center>
+                </div>
+                <div class="col-md-3">
                     <center>
                         <button type="button" class="btn btn-secondary btn-md"><a style="color:white" href="/services/<%=service._id%>">Show More</a></button>
                     </center>
@@ -37,4 +42,3 @@
          <%})%>
     </div>
 
-<%- include ('./partials/footer') %>

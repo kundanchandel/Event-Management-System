@@ -1,8 +1,8 @@
-<%- include ('../partials/header') %>
+<%- include ('../partials/header0') %>
     
     <h1 style="text-align: center">Add Service</h1>
     <div style="width: 30%;margin: 25px auto;">
-        <form action="/vendor/addService" method="POST" enctype="multipart/form-data">
+        <form action="/vendor/addService" method="POST">
             <div class="form-group">
                 <select  name="type">
                     <option value="Decoration">Decoration</option>
@@ -25,13 +25,20 @@
                 <input class="form-control" type="text" name="price" placeholder="Price">
             </div>
             <div class="form-group">
-                <input class="form-control" type="file" name="images" multiple accept="image/*"/>
+                <input class="form-control" type="text" name="image0" placeholder="Image Link"/>
             </div>
-            <p>You can upload upto 5 images</p>
+            <div class="form-group">
+                <input class="form-control" type="text" name="image1" placeholder="Image Link"/>
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="text" name="image2" placeholder="Image Link"/>
+            </div>
+            <p>You can upload upto 3 images</p>
             <div class="form-group">
                 <button class="btn btn-lg btn-primary btn-block">Add service</button> 
             </div>
         </form>
     </div>
 
-<%- include ('../partials/footer') %>
+</body>
+</html>

@@ -1,6 +1,6 @@
 <%- include ('./partials/header') %>
     <div style="margin-top: 10vh;">
-        <h1 style="text-align: center">Login</h1>
+        <h1 style="text-align: center"><%=type%> Login</h1>
         <div style="width: 30%;margin: 25px auto;">
             <form action="/<%=type%>/login" method="POST">
                 <div class="form-group">
@@ -13,7 +13,10 @@
                     <button class="btn btn-lg btn-primary btn-block">Login</button> 
                 </div>
             </form>
+            <a href="/<%=type%>/register"><h4>Don't have an account? Sign up</h4></a>
+            
         </div>
     </div>
 
-<%- include ('./partials/footer') %>
+</body>
+</html>

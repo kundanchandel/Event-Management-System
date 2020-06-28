@@ -1,0 +1,29 @@
+<%- include ('../partials/header') %>
+
+    <div class="container-fluid" style="margin-top: 10px;">
+        <h2>Your services <%=user.username%></h2>
+         <hr>
+         <br><br>
+         <% if(user.services.length == 0){%>
+            <h4>You have no services</h4>
+         <%}else{user.services.forEach(function(service){%>
+            <div class="row">
+                <div class="col-md-4">
+                    <center>
+                        Type : <%=service.type%>
+                    </center>
+                </div>
+                <div class="col-md-4">
+                    <center>
+                        City : <%=service.city%>
+                    </center>
+                </div>
+                <div class="col-md-4">
+                    <center>
+                        Provider : <%=service.provider.username%>
+                    </center>
+                </div>
+            </div>
+            <hr>
+         <%})}%>
+    </div>
