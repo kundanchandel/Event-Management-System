@@ -91,7 +91,6 @@ app.post("/user/login",async function(req,res){
                 httpOnly:true
             });
             res.redirect("/main");
-
         }
     }
 });
