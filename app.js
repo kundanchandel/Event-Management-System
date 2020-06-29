@@ -22,7 +22,7 @@ app.set("view engine","ejs");
 app.use(methodOverride("_method"));
 app.use(cookieParser());
 
-mongoose.connect('mongodb://localhost/event',function(err){
+mongoose.connect(process.env.MONGODB,function(err){
 if(err) throw err;
 console.log("connected to db...");
 });
