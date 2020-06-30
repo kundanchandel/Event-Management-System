@@ -1,15 +1,12 @@
-<%- include ('../partials/header0') %>
+<%- include ('../partials/header1') %>
 
 <div class="container-fluid">
-    <div class="row mt-2">
-        <div class="col-10 col-sm-6">
-        <h1>Welcome <%=vendor.username%></h1>
-        </div>
-        <div class="col-10 mt-1 col-sm-6">
-            <button type="button" class="btn btn-secondary"><a style="color:white" href="/vendor/addService" >Add new service</a></button>
+    <div class="row mt-2 ml-2">
+        <div>
+        <h3>Welcome <%=vendor.username%></h3>
         </div>
     </div>
-    <div class="row ml-1">
+    <div class="row ml-2">
         <address><%=vendor.email%></address>
     </div>
     
@@ -24,8 +21,10 @@
 
                     <img class="card-img-top" src="<%=service.image[0] %>">
                     <div class="card-body ">
-                        <h5 class="card-title">Type: <%= service.type %> </h5>
-                        <h5 class="card-title">City: <%= service.city %> </h5>
+                        <h6 class="card-title">Price: <%= service.price %> </h6>
+                        <h6 class="card-title">Type: <%= service.type %> </h6>
+                        <h6 class="card-title">City: <%= service.city %> </h6>
+                        <hr>
                         <p class="card-text"><%= service.description %> </p>
                     </div>
                 
@@ -35,5 +34,4 @@
     
 </div>
 <hr><hr>
-</body>
-</html>
+<%- include ('../partials/footer1') %>

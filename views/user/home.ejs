@@ -1,42 +1,36 @@
-<%- include ('../partials/header') %>
-
+<%- include ('../partials/header0') %>
 <div class="container-fluid">
-    <div class="row mt-2 ">
-        <div class="col-md-10 col-sm-6">
+    <div class="row mt-2 p-2 ">
             <h3>Welcome <%=user.username%></h3>
-        </div>
-        <div class="col-md-2 col-sm-6" >
-            <a style="margin-top: 10px;" href="/user/preview"><h4>Preview</h4></a>
-        </div>
-    </div>    
-     <h4>Services</h4>
-     <hr>
-    
+    </div>
+    <h4>Services</h4>
+    <hr>
+
     <div class="row" style="display: flex; flex-wrap:wrap;">
         <% services.forEach(function(service){ %>
-            <div class=" col-12 col-sm-4  col-md-3 card p-3">
-                    
-                        <img class="card-img-top" src="<%=service.image[0]%>">
-                        <div class="card-body ">
-                            <h6  class="card-title" style="float: right;;">Price: <%= service.price %></h6>
-                            <br>
-                            <hr>
-                            <h5 class="card-title">Type: <%= service.type %> </h5>
-                            <h5 class="card-title">City: <%= service.city %> </h5>
-                            <hr>
-                            <p class="card-text"><%= service.description %> </p>
-                            <hr>
-                            <h5 class="card-text">Provider: <%= service.provider.username %></h5>
-                            <hr>
-                            <button type="button" class="btn btn-secondary btn-md"><a style="color:white" href="/services/<%= service._id %>">Show More</a></button>
-                        </div>
+        <div class=" col-12 col-sm-4  col-md-3 card p-3">
+
+            <img class="card-img-top" src="<%=service.image[0]%>">
+            <div class="card-body ">
+                <h6 class="card-title" style="float: right;;">Price: <%= service.price %></h6>
+                <br>
+                <hr>
+                <h5 class="card-title">Type: <%= service.type %> </h5>
+                <h5 class="card-title">City: <%= service.city %> </h5>
+                <hr>
+                <p class="card-text"><%= service.description %> </p>
+                <hr>
+                <h5 class="card-text">Provider: <%= service.provider.username %></h5>
+                <hr>
+                <button type="button" class="btn btn-secondary btn-md" style="position:absolute; bottom:5px"><a style="color:white"
+                        href="/services/<%= service._id %>">Show More</a></button>
             </div>
+        </div>
         <% }); %>
     </div>
-    
+
 </div>
-<hr><hr>
+<hr>
+<hr>
 
-
-</body>
-</html>
+<%- include ('../partials/footer0') %>
