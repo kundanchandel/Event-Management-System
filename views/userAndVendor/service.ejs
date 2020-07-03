@@ -1,0 +1,73 @@
+<%- include ('../partials/header0') %>
+<style>
+    .providerName{
+    color:#999    
+    }
+    .providerName:hover{
+        color:#38d39f;
+    }
+    .showMore:hover{
+        color:#38d39f;
+    }
+    .btn{
+        background-color:#38d39f;;
+    }
+    .btn a{
+        color:white
+    }
+    .btn:hover a{
+        color:#999;
+    }
+</style>
+
+
+<div class="container-fluid">
+    <div class="row m-3">
+        <h3>
+            <a class="providerName""
+                href="/vendorProfile/<%=service.provider.id%>"><%=service.provider.username%>
+            </a>
+        </h3>
+    </div>
+    <div class="row">
+        <div class="col-12 col-lg-8">
+            <div class="row m-2">
+                <div class="col-md-4">
+                    <h5><i class="fab fa-servicestack"></i> <%=service.type%></h5>
+                </div>
+                <div class="col-md-4">
+                    <h5><i class="fas fa-map-marker-alt"></i>  <%=service.city%></h5>
+                </div>
+                <div class="col-md-4">
+                    <h5><i class="fas fa-tags"></i>  <%=service.price%></h5>
+                </div>
+            </div>
+            <hr>
+            <div class="row m-3">
+                <div>
+                    <h4><%=service.description%></h4>
+                </div>
+            </div>
+            <hr />
+            <div class="row m-3">
+                <button type="button" class="btn">
+                    <a href="/user/addService/<%=service._id%>">Add Service</a>
+                </button>
+            </div>
+            <div class="row m-3">
+                <p><a href="/vendorProfile/<%=service.provider.id%>" class="showMore">About <%=service.provider.username%> and services</a></p>
+            </div>
+            <hr>
+        </div>
+        <div class="col-12 col-lg-4">
+            <center><h3>Gallery</h3></center>
+            <% service.image.forEach(function(image){ %>
+                <div class="m-3">
+                    <img class="card-img-top" src="<%=image%>" alt="" />
+                </div>
+                <% }); %>
+        </div>
+    </div>
+</div>
+
+<%- include ('../partials/footer0') %>

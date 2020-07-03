@@ -4,8 +4,8 @@ var vendorSchema = new mongoose.Schema({
     username     :String,
     password     :String,
     email        :String,
-    contact      :String,
-    bussinessName:String,
+    contactNo      :String,
+    address     :String,
     description  :String,
     services     :[
            {

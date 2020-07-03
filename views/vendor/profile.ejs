@@ -1,37 +1,48 @@
 <%- include ('../partials/header1') %>
 
 <div class="container-fluid">
-    <div class="row mt-2 ml-2">
-        <div>
-        <h3>Welcome <%=vendor.username%></h3>
-        </div>
+    <div class="row mt-2 ml-2"> 
+        <h3>Welcome <span style="color:#00a36d;"><%=vendor.username%></span></h3>
     </div>
+    <hr>
     <div class="row ml-2">
-        <address><%=vendor.email%></address>
+        <div class="col-12">
+            <h6><i class="far fa-envelope"></i> <%=vendor.email%></h6>
+            <h6><i class="fas fa-phone"></i> <%=vendor.contactNo%></h6>
+            <h6><i class="fas fa-map-marker-alt"></i> <%=vendor.address%></h6>
+            <p><%=vendor.description%></p>
+        </div> 
     </div>
-    
-    <br>
-    <br>
+    <hr>
      <h2>Services</h2>
      <hr>
-    
-    <div class="row" style="display: flex; flex-wrap:wrap;">
         <% vendor.services.forEach(function(service){ %>
-            <div class=" col-10 col-sm-4  col-md-3  card p-3">
-
-                    <img class="card-img-top" src="<%=service.image[0] %>">
+            <div class="row">
+                <div class="col-12 col-lg-3">
                     <div class="card-body ">
-                        <h6 class="card-title">Price: <%= service.price %> </h6>
-                        <h6 class="card-title">Type: <%= service.type %> </h6>
-                        <h6 class="card-title">City: <%= service.city %> </h6>
+                        <h6 class="card-title"><i class="fas fa-tags"></i> <%= service.price %> </h6>
+                        <h6 class="card-title"><i class="fab fa-servicestack"></i> <%= service.type %> </h6>
+                        <h6 class="card-title"><i class="fas fa-map-marker-alt"></i> <%= service.city %> </h6>
                         <hr>
                         <p class="card-text"><%= service.description %> </p>
                     </div>
-                
-            </div>
+                </div>
+                <div class="col-12 col-lg-9">
+                    <div class="row">
+                        <div class="col-12 col-md-4 p-1">
+                            <img class="card-img-top" src="<%=service.image[0] %>">
+                        </div>
+                        <div class="col-12 col-md-4 p-1">
+                            <img class="card-img-top" src="<%=service.image[1] %>">
+                        </div>
+                        <div class="col-12 col-md-4 p-1">
+                            <img class="card-img-top" src="<%=service.image[2] %>">
+                        </div>
+                    </div>
+                </div>
+            </div>  
+            <hr> 
         <% }); %>
-    </div>
-    
 </div>
-<hr><hr>
-<%- include ('../partials/footer1') %>
+
+<%- include ('../partials/footer0') %>

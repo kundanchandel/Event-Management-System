@@ -10,7 +10,7 @@ var cookieParser    = require("cookie-parser");
 function isLoggedIn(req,res,next){
     const token = req.cookies.authToken
     if(!token){
-        res.send("<h1>You must be logged in to do that</h1>");
+        req.flash("error",'You must be logged in to do that')
     }else{
         const verified = jwt.verify(token,process.env.TOKEN_SECRET);
         if(req.user != verified){
@@ -43,7 +43,6 @@ router.post("/addService",isLoggedIn,function(req,res){
         price: req.body.price,
         image: images
     };
-    console.log(req.user)
     Vendor.findById(req.user._id,function(err,vendor){
         if(err){
             console.log(err);
@@ -57,45 +56,54 @@ router.post("/addService",isLoggedIn,function(req,res){
                     service.save();
                     vendor.services.push(service);
                     vendor.save();
-                    //res.redirect("/user/profile");
                 }
             });
-        
+            req.flash("success",'Service added')
             res.redirect("/vendor/profile");
         }
     })
 });
 
 router.get("/login",function(req,res){
-    res.render("login",{type:"vendor"});
+    res.render("auth/loginVendor");
 });
 
 router.get("/register",function(req,res){
-    res.render("register",{type:"vendor"});
+    res.render("auth/registerVendor");
 });
 
 
 router.post("/register",async function(req,res){
     const emailExist = await Vendor.findOne({email:req.body.email});
     if(!emailExist){
+    if(req.body.password!==req.body.password1){
+        req.flash("error",'Error: Password does\'t match')
+    }
     const salt = await bcrypt.genSalt(10);
     const hashedPassword =await bcrypt.hash(req.body.password,salt)
-    var vendor = new Vendor({username:req.body.username, email:req.body.email,password:hashedPassword});
+    var vendor = new Vendor({
+        username:req.body.username,
+        email:req.body.email,
+        contactNo:req.body.contactNo,
+        description:req.body.description,
+        address:req.body.address,
+        password:hashedPassword
+    });
     vendor.save()
     res.redirect("/vendor/login")
     }else{
-        res.send("email already exist...");
+        req.flash("error",'Error: Email Already exist')
     }
 });
 
 router.post("/login",async function(req,res){
     const vendor = await Vendor.findOne({email:req.body.email});
     if(!vendor){
-        res.send("email does't exist")
+        req.flash("error",'Error: Invalid credentials')
     }else{
-        const validpass =await bcrypt.compare(req.body.password,vendor.password)
-        if(!validpass){
-            res.send("Invalid password")
+        const validPass =await bcrypt.compare(req.body.password,vendor.password)
+        if(!validPass){
+            req.flash("error",'Error: Invalid credentials')
         }else{
             const token = jwt.sign({_id:vendor._id},process.env.TOKEN_SECRET);
             res.cookie('authToken',token,{
@@ -106,6 +114,5 @@ router.post("/login",async function(req,res){
         }
     }
 });
-
 
 module.exports = router;

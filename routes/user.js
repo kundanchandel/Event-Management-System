@@ -10,7 +10,7 @@ var cookieParser    = require("cookie-parser");
 function isLoggedIn(req,res,next){
     const token = req.cookies.authToken
     if(!token){
-        res.send("<h1>You must be logged in to do that</h1>");
+        req.flash("error",'Error: You must be logged in to do that')
     }else{
         const verified = jwt.verify(token,process.env.TOKEN_SECRET);
         if(req.user != verified){
@@ -37,34 +37,39 @@ router.get("/home",isLoggedIn,function(req,res){
 });
 
 router.get("/login",function(req,res){
-    res.render("login",{type:"user"});
+    res.render("auth/loginUser");
 });
 
 router.get("/register",function(req,res){
-    res.render("register",{type:"user"});
+    res.render("auth/registerUser");
 });
 
 router.post("/register",async function(req,res){    
     const emailExist = await User.findOne({email:req.body.email});
     if(!emailExist){
+        if(req.body.password !== req.body.password1){
+            req.flash("error",'Error:Password does\'t match')
+        }
         const salt = await bcrypt.genSalt(10);
         const hashedPassword =await bcrypt.hash(req.body.password,salt)
-        var user = new User({username:req.body.username, email:req.body.email, password:hashedPassword});
-        user.save()
-        res.redirect("/")
+        var user =await new User({username:req.body.username, email:req.body.email, password:hashedPassword});
+        await user.save()
+        req.flash("Success",'Registration successful, Now log in to your account')
+        res.redirect("/user/login");
     }else{
-        res.send("email already exist")
+        req.flash("error",'Error: Email already exist')
     }
 });
 
 router.post("/login",async function(req,res){
     const user = await User.findOne({email:req.body.email});
     if(!user){
-        res.send("email does't exist")
+        req.flash("error",'Error: Invalid credentials')
+        res.redirect('/user/login');
     }else{
         const validpass =await bcrypt.compare(req.body.password,user.password)
         if(!validpass){
-            res.send("Invalid password")
+            req.flash("error",'Error: Invalid credentials')
         }else{
             const token = jwt.sign({_id:user._id},process.env.TOKEN_SECRET);
             res.cookie('authToken',token,{
@@ -85,9 +90,14 @@ router.get("/addService/:id",isLoggedIn,(req,res)=>{
                 if(err){
                     console.log(err)
                 }else{
-                    user.services.push(service);
-                    user.save();
-                    res.redirect("back")
+                    if(user.services.includes(service.provider.id)){
+                        req.flash("error",'Service already added');
+                    }else{
+                        user.services.push(service);
+                        user.save();
+                        req.flash("success",'Service added to your basket and preview section');
+                        res.redirect("back")
+                    }
                 }
             });
         }
@@ -99,7 +109,6 @@ router.get("/preview",isLoggedIn,(req,res)=>{
         if(err){
             console.log(err);
         }else{ 
-            console.log(user);
             res.render("user/preview",{user:user});
         }
     });

@@ -1,0 +1,59 @@
+<%- include ('../partials/header0') %>
+<style>
+    .btn{
+        background-color:#38d39f;
+    }
+    .btn a{
+        color:white
+    }
+    .btn:hover a{
+        color:#999;
+    }
+</style>
+    <div class="container-fluid" style="margin-top: 10px;">
+        <div class="row">
+                <div class="col-12 col-lg-2">
+                    <h5 style="color: #00a36d;"><%=vendor.username%></h5>
+                    <hr>
+                    <h6><i class="far fa-envelope"></i> <%=vendor.email%></h6>
+                    <h6><i class="fas fa-phone"></i> <%=vendor.contactNo%></h6>
+                    <h6><i class="fas fa-map-marker-alt"></i> <%=vendor.address%></h6>
+                    <hr>
+                    <p>
+                        <%=vendor.description%>
+                    </p>
+                </div>     
+                <div class="col-12 col-lg-10">
+                    <center><h5>Services</h5></center>
+                    <hr>
+                    <%vendor.services.forEach(function(service){%>
+                        <div class="row">
+                            <div class="col-md-3">
+                                
+                                    <i class="fab fa-servicestack"></i>  <%=service.type%>
+                                
+                            </div>
+                            <div class="col-md-3">
+                                
+                                    <i class="fas fa-map-marker"></i>  <%=service.city%>
+                                
+                            </div>
+                            <div class="col-md-3">
+                                
+                                    <i class="fas fa-tags"></i> <%=service.price%>
+                                
+                            </div>
+                            <div class="col-md-3">
+                                <center>
+                                    <button type="button" class="btn"><a href="/services/<%=service._id%>">Show More</a></button>
+                                </center>
+                            </div>
+                        </div>
+                        <br>
+                     <%})%>
+                </div>
+        </div>
+         <br><br>
+         
+    </div>
+<%- include ('../partials/footer0') %>

@@ -1,0 +1,90 @@
+<%- include ('../partials/header') %>
+<style>
+body{
+    overflow: auto;
+}
+.login-content{
+    margin-top: 10vh;
+}
+</style>
+<img class="wave" src="/img/wave.png">
+<div class="container">
+    <div class="img">
+        <img src="/img/bg.svg">
+    </div>
+    <div class="login-content">
+        <form action="/vendor/register" method="POST">
+            <img src="/img/avatar.svg">
+            <h3 class="title">Welcome Vendor</h3>
+            <div class="input-div one">
+                <div class="i">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="div">
+                    <h5>Name</h5>
+                    <input type="text" class="input" name="username">
+                </div>
+            </div>
+            <div class="input-div one">
+                <div class="i">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="div">
+                    <h5>E-mail</h5>
+                    <input type="text" class="input" name="email">
+                </div>
+            </div>
+             <div class="input-div one">
+                <div class="i">
+                    <i class="fas fa-phone"></i>
+                </div>
+                <div class="div">
+                    <h5>Contact No</h5>
+                    <input type="text" class="input" name="contactNo">
+                </div>
+            </div> 
+            <div class="input-div one">
+                <div class="i">
+                    <i class="fas fa-comment"></i>
+                </div>
+                <div class="div">
+                    <h5>Description</h5>
+                    <input type="text" class="input" name="description"></input>
+                </div>
+            </div>
+            <div class="input-div one">
+                <div class="i">
+                    <i class="fas fa-map-marker"></i>
+                </div>
+                <div class="div">
+                    <h5>Address</h5>
+                    <input type="text" class="input" name="address">
+                </div>
+            </div>
+            <div class="input-div pass">
+                <div class="i">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <div class="div">
+                    <h5>Password</h5>
+                    <input type="password" class="input" name="password">
+                </div>
+            </div>
+            <div class="input-div pass">
+                <div class="i">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <div class="div">
+                    <h5>Confirm Password</h5>
+                    <input type="password" class="input" name="password1">
+                </div>
+            </div>
+            <a href="/vendor/login">
+                <p>Already have an account? Log in</p>
+            </a>
+            <input type="submit" class="btn" value="Register">
+        </form>
+    </div>
+</div>
+<script type="text/javascript" src="/js/main.js"></script>
+<%- include ('../partials/footer0') %>

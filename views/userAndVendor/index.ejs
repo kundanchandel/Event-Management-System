@@ -1,4 +1,26 @@
-<%- include ('./partials/header') %>
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> 
+        <meta content="width=device-width, initial-scale=1" name="viewport" />
+    </head>
+    <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: #e3f2fd;">            
+            <a class="navbar-brand" style="color:#00a36d" href="/"><img style="height: 30px;" src="/img/logo.png" alt=""> eventNow</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav ml-auto ">
+                  <li class="nav-item">
+                    <a class="nav-link" href="/user/register">Register</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="/user/login">Login</a>
+                  </li>
+            </ul>
+            </div>
+          </nav>
 
     <style>
         .image{
@@ -220,9 +242,7 @@
 	<footer class="page-footer font-small pt-3" style="background-color: #878787; bottom: 0;">
 		<div class="container text-center">
 			<h4 style="color:white;">
-				<a href="/vendor/register" style="color:white; ">Register as a Vendor</a>
-				| 
-				<a href="/vendor/login"style="color:white;">Login as a Vendor</a>
+				<a href="/vendor/login" style="color:white; ">Join us as a vendor</a>
 			</h4>
 		</div>
 		<div class="text-center py-2">

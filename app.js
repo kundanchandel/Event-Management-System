@@ -1,65 +1,43 @@
-var bodyparser      = require("body-parser");
-var express         = require("express"); 
-var app             = express();
-var mongoose        = require("mongoose");
-var bcrypt          = require("bcrypt")
-var jwt             = require("jsonwebtoken");
-var cookieParser    = require("cookie-parser");
-var methodOverride  = require("method-override"); // for method="DELETE"
-var dotenv          = require("dotenv");
+var bodyparser          = require("body-parser");
+var express             = require("express"); 
+var app                 = express();
+var mongoose            = require("mongoose");
+var bcrypt              = require("bcrypt")
+var jwt                 = require("jsonwebtoken");
+var cookieParser        = require("cookie-parser");
+var methodOverride      = require("method-override"); 
+var dotenv              = require("dotenv");
 dotenv.config()
+var flash       = require("connect-flash");
+var Services            = require("./models/services");
+var User                = require("./models/user");
+var Vendor              = require("./models/vendor");
+var userRoutes          = require("./routes/user");
+var vendorRoutes        = require("./routes/vendor");
+var userAndVendorRoutes = require("./routes/userAndVendor");
 
-/*************************************MODELS*************************************/
-var Services        = require("./models/services");
-var User            = require("./models/user");
-var Vendor          = require("./models/vendor");
-
-var userRoutes = require("./routes/user");
-var vendorRoutes = require("./routes/vendor");
-
+mongoose.connect(process.env.MONGODB,function(err){
+    if(err) throw err;
+    console.log("connected to db...");
+})
+app.use(flash());
+app.use(require("express-session")({
+    secret:"anything",
+    resave:false,
+    saveUninitialized:false
+}));
+app.use(function(req,res,next){
+    res.locals.currentUser = req.user;
+    res.locals.error = req.flash("error");
+    res.locals.success = req.flash("success");
+    next();
+})
+app.use(express.static(__dirname + '/public'));
 app.use(bodyparser.urlencoded({extended:true}));
 app.set("view engine","ejs");
 app.use(methodOverride("_method"));
 app.use(cookieParser());
-
-mongoose.connect(process.env.MONGODB,function(err){
-if(err) throw err;
-console.log("connected to db...");
-});
-
-app.get("/",function(req,res){
-   res.render("index");
-});
-
-app.get("/logout",function(req,res){
-    res.cookie('authToken',"",{
-        maxAge:-1
-    });
-    res.redirect("/");
-});
-
-app.get("/services/:id",(req,res)=>{
-    Services.findById(req.params.id,(err,service)=>{
-        if(err){
-            console.log(err);
-        }else{
-            res.render("service",{service:service});
-        }
-    });
-})
-
-app.get("/provider/profile/:id",(req,res)=>{
-    Vendor.findById(req.params.id).populate("services").exec(function(err,vendor){
-        if(err){
-            console.log(err);
-        }else{
-            res.render("profile.ejs",{vendor:vendor});
-        }
-    });
-});
-
-
-
+app.use('/',userAndVendorRoutes);
 app.use("/user",userRoutes);
 app.use("/vendor",vendorRoutes);
 

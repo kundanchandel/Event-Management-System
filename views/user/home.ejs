@@ -1,29 +1,45 @@
 <%- include ('../partials/header0') %>
+<style>
+    .type{
+        padding: 3px;
+        background-color:#33BE8F;
+        color: white;
+        border-radius: 50%;
+    }
+    .showMore{
+        color: #999;
+        text-decoration: none;
+    }
+    .showMore:hover{
+	color: #38d39f;
+    }
+    
+</style>
+
 <div class="container-fluid">
     <div class="row mt-2 p-2 ">
-            <h3>Welcome <%=user.username%></h3>
+            <h3>Welcome <span style="color:#00a36d"><%=user.username%></span></h3>
     </div>
     <h4>Services</h4>
     <hr>
 
     <div class="row" style="display: flex; flex-wrap:wrap;">
         <% services.forEach(function(service){ %>
-        <div class=" col-12 col-sm-4  col-md-3 card p-3">
-
-            <img class="card-img-top" src="<%=service.image[0]%>">
-            <div class="card-body ">
-                <h6 class="card-title" style="float: right;;">Price: <%= service.price %></h6>
-                <br>
-                <hr>
-                <h5 class="card-title">Type: <%= service.type %> </h5>
-                <h5 class="card-title">City: <%= service.city %> </h5>
-                <hr>
-                <p class="card-text"><%= service.description %> </p>
-                <hr>
-                <h5 class="card-text">Provider: <%= service.provider.username %></h5>
-                <hr>
-                <button type="button" class="btn btn-secondary btn-md" style="position:absolute; bottom:5px"><a style="color:white"
-                        href="/services/<%= service._id %>">Show More</a></button>
+        <div class=" col-12 col-sm-6 col-md-4 col-lg-3  p-1">
+                <div class="card">
+                <img class="card-img-top" src="<%=service.image[0]%>">
+                <div class="card-body ">
+                    <h6 class="card-title type" style="float: left;"><%= service.type %> </h6>
+                    <p class="card-title" style="float: right;"><i class="fas fa-tag"></i>  <%= service.price %></p>
+                    <br>
+                    <hr>
+                    <h6 class="card-title" style="float: left;"><i class="fas fa-map-marker"></i>  <%= service.city %> </h6>
+                    <h6 class="card-text" style="float: right;"><i class="fas fa-building"></i>  <%= service.provider.username %></h6>
+                    <br><hr>
+                    <p class="card-text"><%= service.description %> </p>
+                    <hr>
+                    <a class="showMore" href="/services/<%= service._id %>">Show More</a>
+                </div>
             </div>
         </div>
         <% }); %>
