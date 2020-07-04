@@ -49,6 +49,7 @@ router.post("/register",async function(req,res){
     if(!emailExist){
         if(req.body.password !== req.body.password1){
             req.flash("error",'Error:Password does\'t match')
+            res.redirect("/user/register");
         }
         const salt = await bcrypt.genSalt(10);
         const hashedPassword =await bcrypt.hash(req.body.password,salt)
@@ -58,6 +59,7 @@ router.post("/register",async function(req,res){
         res.redirect("/user/login");
     }else{
         req.flash("error",'Error: Email already exist')
+        res.redirect("/user/register");
     }
 });
 

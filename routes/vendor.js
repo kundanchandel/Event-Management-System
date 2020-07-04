@@ -10,7 +10,7 @@ var cookieParser    = require("cookie-parser");
 function isLoggedIn(req,res,next){
     const token = req.cookies.authToken
     if(!token){
-        req.flash("error",'You must be logged in to do that')
+        req.flash("error","You must be logged in to do that");
     }else{
         const verified = jwt.verify(token,process.env.TOKEN_SECRET);
         if(req.user != verified){
@@ -78,6 +78,7 @@ router.post("/register",async function(req,res){
     if(!emailExist){
     if(req.body.password!==req.body.password1){
         req.flash("error",'Error: Password does\'t match')
+        res.redirect('/vendor/register');
     }
     const salt = await bcrypt.genSalt(10);
     const hashedPassword =await bcrypt.hash(req.body.password,salt)
@@ -92,7 +93,8 @@ router.post("/register",async function(req,res){
     vendor.save()
     res.redirect("/vendor/login")
     }else{
-        req.flash("error",'Error: Email Already exist')
+        req.flash("Error",'Error: Email Already exist')
+        res.redirect("/vendor/register");
     }
 });
 

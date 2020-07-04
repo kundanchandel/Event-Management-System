@@ -22,7 +22,7 @@ body{
                 </div>
                 <div class="div">
                     <h5>Name</h5>
-                    <input type="text" class="input" name="username">
+                    <input type="text" class="input" name="username" required>
                 </div>
             </div>
             <div class="input-div one">
@@ -31,7 +31,7 @@ body{
                 </div>
                 <div class="div">
                     <h5>E-mail</h5>
-                    <input type="text" class="input" name="email">
+                    <input type="email" class="input" name="email" required>
                 </div>
             </div>
              <div class="input-div one">
@@ -40,7 +40,7 @@ body{
                 </div>
                 <div class="div">
                     <h5>Contact No</h5>
-                    <input type="text" class="input" name="contactNo">
+                    <input type="text" class="input" name="contactNo" minlength="10" required>
                 </div>
             </div> 
             <div class="input-div one">
@@ -49,7 +49,7 @@ body{
                 </div>
                 <div class="div">
                     <h5>Description</h5>
-                    <input type="text" class="input" name="description"></input>
+                    <input type="text" class="input" name="description" minlength="50" required></input>
                 </div>
             </div>
             <div class="input-div one">
@@ -58,7 +58,7 @@ body{
                 </div>
                 <div class="div">
                     <h5>Address</h5>
-                    <input type="text" class="input" name="address">
+                    <input type="text" class="input" name="address" required>
                 </div>
             </div>
             <div class="input-div pass">
@@ -67,7 +67,7 @@ body{
                 </div>
                 <div class="div">
                     <h5>Password</h5>
-                    <input type="password" class="input" name="password">
+                    <input type="password" class="input" name="password" minlength="7" required>
                 </div>
             </div>
             <div class="input-div pass">
@@ -76,7 +76,7 @@ body{
                 </div>
                 <div class="div">
                     <h5>Confirm Password</h5>
-                    <input type="password" class="input" name="password1">
+                    <input type="password" class="input" name="password1"minlength="7" required>
                 </div>
             </div>
             <a href="/vendor/login">
