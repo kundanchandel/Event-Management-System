@@ -29,45 +29,43 @@
             </a>
         </h3>
     </div>
-    <div class="row">
-        <div class="col-12 col-lg-8">
-            <div class="row m-2">
-                <div class="col-md-4">
-                    <h5><i class="fab fa-servicestack"></i> <%=service.type%></h5>
+            <div class="row">
+                <div class="col-12 col-lg-3">
+                        <div>
+                            <h5><i class="fab fa-servicestack"></i> <%=service.type%></h5>
+                        </div>
+                        <div>
+                            <h5><i class="fas fa-map-marker-alt"></i>  <%=service.city%></h5>
+                        </div>
+                        <div>
+                            <h5><i class="fas fa-tags"></i>  <%=service.price%></h5>
+                        </div>
+                    <hr>
+                        <div>
+                                <p><%=service.description%></p>
+                        </div>
+                    <hr>
+                        <div>
+                            <button type="button" class="btn">
+                                <a href="/user/addService/<%=service._id%>">Add Service</a>
+                            </button>
+                        </div>
+                        <div>
+                            <p><a href="/vendorProfile/<%=service.provider.id%>" class="showMore">About <%=service.provider.username%> and services</a></p>
+                        </div>
+                    <hr>
                 </div>
-                <div class="col-md-4">
-                    <h5><i class="fas fa-map-marker-alt"></i>  <%=service.city%></h5>
-                </div>
-                <div class="col-md-4">
-                    <h5><i class="fas fa-tags"></i>  <%=service.price%></h5>
+                <div class="col-12 col-lg-9">
+                    <center><h3>Gallery</h3></center>
+                    <div class="row">
+                        <% service.image.forEach(function(image){ %>
+                            <div class="col-12 col-lg-4">
+                                <img class="card-img-top" src="<%=image%>" alt="" style="max-height: 35vh;"/>
+                            </div>
+                        <% }); %>
+                    </div>
                 </div>
             </div>
-            <hr>
-            <div class="row m-3">
-                <div>
-                    <h4><%=service.description%></h4>
-                </div>
-            </div>
-            <hr />
-            <div class="row m-3">
-                <button type="button" class="btn">
-                    <a href="/user/addService/<%=service._id%>">Add Service</a>
-                </button>
-            </div>
-            <div class="row m-3">
-                <p><a href="/vendorProfile/<%=service.provider.id%>" class="showMore">About <%=service.provider.username%> and services</a></p>
-            </div>
-            <hr>
-        </div>
-        <div class="col-12 col-lg-4">
-            <center><h3>Gallery</h3></center>
-            <% service.image.forEach(function(image){ %>
-                <div class="m-3">
-                    <img class="card-img-top" src="<%=image%>" alt="" />
-                </div>
-                <% }); %>
-        </div>
-    </div>
 </div>
 
 <%- include ('../partials/footer0') %>

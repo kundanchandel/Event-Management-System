@@ -55,7 +55,7 @@ router.post("/register",async function(req,res){
         const hashedPassword =await bcrypt.hash(req.body.password,salt)
         var user =await new User({username:req.body.username, email:req.body.email, password:hashedPassword});
         await user.save()
-        req.flash("Success",'Registration successful, Now log in to your account')
+        req.flash("success",'Registration successful, Now log in to your account')
         res.redirect("/user/login");
     }else{
         req.flash("error",'Error: Email already exist')

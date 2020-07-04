@@ -91,9 +91,10 @@ router.post("/register",async function(req,res){
         password:hashedPassword
     });
     vendor.save()
+    req.flash("success","Registration successfull, Now log into your account.");
     res.redirect("/vendor/login")
     }else{
-        req.flash("Error",'Error: Email Already exist')
+        req.flash("error",'Error: Email Already exist')
         res.redirect("/vendor/register");
     }
 });
