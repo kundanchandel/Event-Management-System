@@ -77,7 +77,7 @@ router.post("/register",async function(req,res){
     const emailExist = await Vendor.findOne({email:req.body.email});
     if(!emailExist){
     if(req.body.password!==req.body.password1){
-        req.flash("error",'Error: Password does\'t match')
+        req.flash("error",'error: Password does\'t match')
         res.redirect('/vendor/register');
     }
     const salt = await bcrypt.genSalt(10);
