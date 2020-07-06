@@ -13,7 +13,23 @@
     .showMore:hover{
 	color: #38d39f;
     }
-    
+    @media (min-width: 576px) {
+    .card-columns {
+        column-count: 2;
+    }
+    }
+
+    @media (min-width: 768px) {
+        .card-columns {
+            column-count: 2;
+        }
+    }
+
+    @media (min-width: 992px) {
+        .card-columns {
+            column-count: 3;
+        }
+    }
 </style>
 
 <div class="container-fluid">
@@ -23,25 +39,23 @@
     <h4>Services</h4>
     <hr>
 
-    <div class="row" style="display: flex; flex-wrap:wrap;">
+    <div class="card-columns">
         <% services.forEach(function(service){ %>
-        <div class=" col-12 col-sm-6 col-md-4 col-lg-3  p-1">
                 <div class="card">
-                <img class="card-img-top" src="<%=service.image[0]%>">
-                <div class="card-body ">
-                    <h6 class="card-title type" style="float: left;"><%= service.type %> </h6>
-                    <p class="card-title" style="float: right;"><i class="fas fa-tag"></i>  <%= service.price %></p>
-                    <br>
-                    <hr>
-                    <h6 class="card-title" style="float: left;"><i class="fas fa-map-marker"></i>  <%= service.city %> </h6>
-                    <h6 class="card-text" style="float: right;"><i class="fas fa-building"></i>  <%= service.provider.username %></h6>
-                    <br><hr>
-                    <p class="card-text"><%= service.description %> </p>
-                    <hr>
-                    <a class="showMore" href="/services/<%= service._id %>">Show More</a>
+                    <img class="card-img-top" src="<%=service.image[0]%>">
+                    <div class="card-body ">
+                        <h6 class="card-title type" style="float: left;"><%= service.type %> </h6>
+                        <p class="card-title" style="float: right;"><i class="fas fa-tag"></i>  <%= service.price %></p>
+                        <br>
+                        <hr>
+                        <h6 class="card-title" style="float: left;"><i class="fas fa-map-marker"></i>  <%= service.city %> </h6>
+                        <h6 class="card-text" style="float: right;"><i class="fas fa-building"></i>  <%= service.provider.username %></h6>
+                        <br><hr>
+                        <p class="card-text"><%= service.description %> </p>
+                        <hr>
+                        <a class="showMore" href="/services/<%= service._id %>">Show More</a>
+                    </div>
                 </div>
-            </div>
-        </div>
         <% }); %>
     </div>
 
